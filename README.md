@@ -1,13 +1,36 @@
-# DriveDiagnose XAI
+# 🚗 DriveDiagnose XAI
 
-An Explainable AI powered Driver Monitoring System that detects fatigue, distraction, and driver risk using Computer Vision.
+An AI-powered Driver Monitoring System that leverages Computer Vision and Explainable AI to detect fatigue, distraction, and unsafe driving behaviors in real time.
 
-## Features
+## 🚀 Current Progress
 
+- ✅ Project architecture setup
+- ✅ Modular camera system
+- ✅ Professional monitoring dashboard
+- ✅ Real-time FPS counter
+- ✅ Live timestamp
+- ✅ Driver monitoring status indicator
+
+## 🛠️ Tech Stack
+
+- Python
+- OpenCV
+- MediaPipe *(coming next)*
+- NumPy
+- Streamlit *(planned)*
+- Plotly *(planned)*
+
+## 📌 Upcoming Features
+
+- Face Mesh Detection
 - Drowsiness Detection
 - Yawning Detection
 - Head Pose Estimation
 - Personalized Driver Baseline
-- Explainable Risk Engine
-- Smart Voice Alerts
+- Explainable Risk Engine (XAI)
 - Driver Safety Report
+- Voice Alerts
+
+---
+
+**Status:** 🚧 Under Active Development
