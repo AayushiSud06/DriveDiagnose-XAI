@@ -1,0 +1,34 @@
+import cv2
+
+WINDOW_NAME = "DriveDiagnose XAI"
+
+FRAME_WIDTH = 1280
+FRAME_HEIGHT = 720
+
+FONT = cv2.FONT_HERSHEY_SIMPLEX
+
+# Colors (BGR)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+CYAN = (255, 255, 0)
+
+GREEN = (0, 220, 0)
+
+RED = (0, 0, 255)
+
+YELLOW = (0, 255, 255)
+
+DARK_GRAY = (35, 35, 35)
+
+LIGHT_GRAY = (90, 90, 90)
+
+HEADER_HEIGHT = 130
+
+FPS_POS = (30,45)
+
+TITLE_POS = (430,45)
+
+TIME_POS = (1010,45)
+
+STATUS_POS = (30,100)

@@ -1,17 +1,20 @@
 import cv2
 
-camera = cv2.VideoCapture(0)
+from modules.camera import Camera
+from utils.constants import *
+
+camera = Camera()
 
 while True:
 
-    success, frame = camera.read()
+    frame = camera.read()
 
-    if not success:
+    if frame is None:
         break
 
-    cv2.imshow("DriveDiagnose XAI", frame)
+    cv2.imshow(WINDOW_NAME, frame)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) == ord("q"):
         break
 
 camera.release()
