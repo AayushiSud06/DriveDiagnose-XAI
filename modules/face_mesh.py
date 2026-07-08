@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+from utils.constants import *
 
 
 class FaceMeshDetector:
@@ -34,6 +35,8 @@ class FaceMeshDetector:
 
      if results.multi_face_landmarks:
 
+        height, width, _ = frame.shape
+
         for face in results.multi_face_landmarks:
 
             self.drawer.draw_landmarks(
@@ -44,6 +47,20 @@ class FaceMeshDetector:
                 connection_drawing_spec=self.drawing_spec,
             )
 
+            # Draw landmark indices
+        if SHOW_LANDMARK_NUMBERS:
+            for idx, landmark in enumerate(face.landmark):
+             x = int(landmark.x * width)
+             y = int(landmark.y * height)
+             cv2.putText(
+            frame,
+            str(idx),
+            (x, y),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.3,
+            YELLOW,
+            1,
+        )
      return frame
     
     def count_faces(self, results):
