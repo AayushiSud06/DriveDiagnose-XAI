@@ -3,10 +3,13 @@ import cv2
 from modules.camera import Camera
 from modules.face_mesh import FaceMeshDetector
 from utils.constants import *
+from modules.eye_detector import EyeDetector
 
 camera = Camera()
 
 face_mesh = FaceMeshDetector()
+
+eye_detector = EyeDetector()
 
 while True:
 
@@ -18,6 +21,7 @@ while True:
     results = face_mesh.process(frame)
 
     frame = face_mesh.draw(frame, results)
+    frame = eye_detector.draw(frame, results)
 
     faces = face_mesh.count_faces(results)
 
