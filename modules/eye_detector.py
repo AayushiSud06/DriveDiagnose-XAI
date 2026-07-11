@@ -71,3 +71,24 @@ class EyeDetector:
             )
 
         return frame
+    
+    def get_eye_points(
+    self,
+    face,
+    eye_indices,
+    width,
+    height,
+    ):
+
+     points = []
+
+     for idx in eye_indices:
+
+        landmark = face.landmark[idx]
+
+        x = int(landmark.x * width)
+        y = int(landmark.y * height)
+
+        points.append((x, y))
+
+     return points
