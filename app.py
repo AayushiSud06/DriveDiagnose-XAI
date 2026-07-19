@@ -8,6 +8,7 @@ from modules.blink_detector import BlinkDetector
 from utils.constants import *
 from modules.drowsiness_detector import DrowsinessDetector
 from modules.mar import MARCalculator
+from modules.yawn_detector import YawnDetector
 
 camera = Camera()
 face_mesh = FaceMeshDetector()
@@ -16,6 +17,7 @@ ear = EARCalculator()
 blink_detector = BlinkDetector()
 drowsiness_detector = DrowsinessDetector()
 mar = MARCalculator()
+yawn_detector = YawnDetector()
 
 blink_count = 0
 status = "MONITORING"
@@ -46,6 +48,8 @@ while True:
     h, w, _ = frame.shape
     average_ear = 0.0
     mouth_ratio = 0.0
+    yawn_count = 0
+    is_yawning = False
 
     if results.multi_face_landmarks:
 
@@ -78,6 +82,7 @@ while True:
  
         average_ear = (left_ear + right_ear) / 2
         mouth_ratio = mar.calculate(mouth_points)
+        yawn_count, is_yawning = yawn_detector.update(mouth_ratio)
         status = drowsiness_detector.update(average_ear)
         print(status)
 
@@ -130,6 +135,26 @@ while True:
         FONT,
         0.7,
         GREEN,
+        2,
+    )
+
+    cv2.putText(
+      frame,
+      f"Yawns : {yawn_count}",
+      (30, 410),
+      FONT,
+      0.7,
+      CYAN,
+      2,
+    )
+    if is_yawning:
+      cv2.putText(
+        frame,
+        "YAWNING",
+        (30, 450),
+        FONT,
+        0.8,
+        RED,
         2,
     )
 
