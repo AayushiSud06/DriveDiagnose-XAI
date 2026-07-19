@@ -6,19 +6,29 @@ LEFT_EYE = [33, 160, 158, 133, 153, 144]
 # Right eye landmark indices
 RIGHT_EYE = [362, 385, 387, 263, 373, 380]
 
+# Mouth landmark indices
+MOUTH = [61, 13, 291, 14]
+
 
 class EyeDetector:
 
     def __init__(self):
         pass
 
-    def draw_eye(self, frame, face, eye_points, width, height):
-
+    def draw_landmarks(
+        self,
+        frame,
+        face,
+        landmark_indices,
+        width,
+        height,
+        color=(0, 255, 0),
+    ):
         """
-        Draw eye landmarks and their indices.
+        Draw facial landmarks and their indices.
         """
 
-        for idx in eye_points:
+        for idx in landmark_indices:
 
             landmark = face.landmark[idx]
 
@@ -30,7 +40,7 @@ class EyeDetector:
                 frame,
                 (x, y),
                 4,
-                (0, 255, 0),
+                color,
                 -1,
             )
 
@@ -54,41 +64,55 @@ class EyeDetector:
 
         for face in results.multi_face_landmarks:
 
-            self.draw_eye(
+            # Left eye
+            self.draw_landmarks(
                 frame,
                 face,
                 LEFT_EYE,
                 width,
                 height,
+                (0, 255, 0),
             )
 
-            self.draw_eye(
+            # Right eye
+            self.draw_landmarks(
                 frame,
                 face,
                 RIGHT_EYE,
                 width,
                 height,
+                (0, 255, 0),
+            )
+
+            # Mouth
+            self.draw_landmarks(
+                frame,
+                face,
+                MOUTH,
+                width,
+                height,
+                (0, 0, 255),
             )
 
         return frame
-    
-    def get_eye_points(
-    self,
-    face,
-    eye_indices,
-    width,
-    height,
+
+    def get_landmark_points(
+        self,
+        face,
+        landmark_indices,
+        width,
+        height,
     ):
 
-     points = []
+        points = []
 
-     for idx in eye_indices:
+        for idx in landmark_indices:
 
-        landmark = face.landmark[idx]
+            landmark = face.landmark[idx]
 
-        x = int(landmark.x * width)
-        y = int(landmark.y * height)
+            x = int(landmark.x * width)
+            y = int(landmark.y * height)
 
-        points.append((x, y))
+            points.append((x, y))
 
-     return points
+        return points

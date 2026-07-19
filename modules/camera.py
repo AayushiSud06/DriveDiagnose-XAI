@@ -17,7 +17,7 @@ class Camera:
 
         self.prev_time = time.time()
 
-    def read(self):
+    def read(self, status="MONITORING"):
 
         success, frame = self.cap.read()
 
@@ -144,24 +144,33 @@ class Camera:
             2,
         )
 
-        # =====================================================
-        # STATUS
+         # =====================================================
+        # DRIVER STATUS
         # =====================================================
 
-        status = "Driver Status : MONITORING"
+        status_colors = {
+            "MONITORING": CYAN,
+            "SAFE": GREEN,
+            "WARNING": YELLOW,
+            "DROWSY": RED,
+        }
+
+        color = status_colors.get(status, WHITE)
+
+        status_text = f"Driver Status : {status}"
 
         cv2.putText(
             frame,
-            status,
+            status_text,
             STATUS_POS,
             FONT,
             0.8,
-            GREEN,
+            color,
             2,
         )
 
         (status_width, status_height), _ = cv2.getTextSize(
-            status,
+            status_text,
             FONT,
             0.8,
             2,
@@ -174,7 +183,7 @@ class Camera:
             frame,
             (circle_x, circle_y),
             8,
-            GREEN,
+            color,
             -1,
         )
 
@@ -183,3 +192,4 @@ class Camera:
     def release(self):
 
         self.cap.release()
+   

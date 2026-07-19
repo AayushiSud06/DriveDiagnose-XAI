@@ -6,18 +6,22 @@ from modules.eye_detector import *
 from modules.ear import EARCalculator
 from modules.blink_detector import BlinkDetector
 from utils.constants import *
+from modules.drowsiness_detector import DrowsinessDetector
+from modules.mar import MARCalculator
 
 camera = Camera()
 face_mesh = FaceMeshDetector()
 eye_detector = EyeDetector()
 ear = EARCalculator()
 blink_detector = BlinkDetector()
+drowsiness_detector = DrowsinessDetector()
+mar = MARCalculator()
 
 blink_count = 0
+status = "MONITORING"
 
 while True:
-
-    frame = camera.read()
+    frame = camera.read(status)
 
     if frame is None:
         break
@@ -40,29 +44,42 @@ while True:
     )
 
     h, w, _ = frame.shape
+    average_ear = 0.0
+    mouth_ratio = 0.0
 
     if results.multi_face_landmarks:
 
         face = results.multi_face_landmarks[0]
 
-        left_points = eye_detector.get_eye_points(
+        left_points = eye_detector.get_landmark_points(
             face,
             LEFT_EYE,
             w,
             h,
         )
 
-        right_points = eye_detector.get_eye_points(
+        right_points = eye_detector.get_landmark_points(
             face,
             RIGHT_EYE,
             w,
             h,
         )
 
+        mouth_points = eye_detector.get_landmark_points(
+           face,
+           MOUTH,
+           w,
+           h,
+        )
+        
+
         left_ear = ear.calculate(left_points)
         right_ear = ear.calculate(right_points)
-
+ 
         average_ear = (left_ear + right_ear) / 2
+        mouth_ratio = mar.calculate(mouth_points)
+        status = drowsiness_detector.update(average_ear)
+        print(status)
 
         cv2.putText(
             frame,
@@ -94,12 +111,22 @@ while True:
             2,
         )
 
+        cv2.putText(
+        frame,
+        f"MAR : {mouth_ratio:.2f}",
+        (30, 330),
+         FONT,
+         0.7,
+         CYAN,
+          2,
+        )
+
         blink_count = blink_detector.update(average_ear)
 
     cv2.putText(
         frame,
         f"Blinks : {blink_count}",
-        (30, 330),
+        (30, 370),
         FONT,
         0.7,
         GREEN,
